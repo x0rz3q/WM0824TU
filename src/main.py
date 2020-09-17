@@ -2,11 +2,16 @@ from argparse import ArgumentParser
 import sqlite3
 from os import path
 import pandas as pd
+from custom_listing_filter import CustomListingFilter
+
+filters = [
+    CustomListingFilter
+]
 
 def load_dataset(location):
     connection = sqlite3.connect(location)
 
-    df = pd.read_sql_query("SELECT * FROM feedbacks left join items on feedbacks.item_hash = items.item_hash", connection)
+    df = pd.read_sql("SELECT * FROM feedbacks left join items on feedbacks.item_hash = items.item_hash", connection)
     # remove duplicated columns
     df = df.loc[:, ~df.columns.duplicated()]
     # close connection
@@ -26,4 +31,5 @@ if __name__ == '__main__':
         exit(1)
 
     df = load_dataset(location)
-    print(df.head())
+    for filter in filters:
+        df = filter.filter(df)
