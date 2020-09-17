@@ -2,11 +2,7 @@ from argparse import ArgumentParser
 import sqlite3
 from os import path
 import pandas as pd
-from custom_listing_filter import CustomListingFilter
-
-filters = [
-    CustomListingFilter
-]
+from filter import Filter
 
 def load_dataset(location):
     connection = sqlite3.connect(location)
@@ -31,5 +27,5 @@ if __name__ == '__main__':
         exit(1)
 
     df = load_dataset(location)
-    for filter in filters:
-        df = filter.filter(df)
+    df = Filter.apply_all_filters(df)
+    
