@@ -28,4 +28,3 @@ if __name__ == '__main__':
 
     df = load_dataset(location)
     df = Filter.apply_all_filters(df)
-    
