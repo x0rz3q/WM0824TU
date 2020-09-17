@@ -6,12 +6,13 @@ import pandas as pd
 def load_dataset(location):
     connection = sqlite3.connect(location)
 
-    feedback = pd.read_sql_query("SELECT * FROM feedbacks", connection)
-    items = pd.read_sql_query("SELECT * FROM items", connection)
-
+    df = pd.read_sql_query("SELECT * FROM feedbacks left join items on feedbacks.item_hash = items.item_hash", connection)
+    # remove duplicated columns
+    df = df.loc[:, ~df.columns.duplicated()]
+    # close connection
     connection.close()
 
-    return (items, feedback)
+    return df
 
 if __name__ == '__main__':
     parser = ArgumentParser(description='Analyze the underground dataset')
@@ -24,4 +25,5 @@ if __name__ == '__main__':
         print("Please specify a valid path")
         exit(1)
 
-    items, feedback = load_dataset(location)
+    df = load_dataset(location)
+    print(df.head())
