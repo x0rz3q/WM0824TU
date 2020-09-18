@@ -1,8 +1,11 @@
 import sqlite3
+import pandas as pd
+import matplotlib.pyplot as plt
 
 class ShippingFrom:
     @staticmethod
     def render(df):
+        #TODO: Tweak and make look pretty
         df = df.copy()
 
         # drop all non-countries
@@ -65,3 +68,13 @@ class ShippingFrom:
 
         for k, v in mapping.items():
             df.replace(k, v, inplace=True)
+
+        df['period'] = pd.DatetimeIndex(df['date']).to_period('M')
+        to_display = df.groupby('ships_from').count()['order_amount_usd'][lambda x: x > 300].index.tolist()
+        df = df[df['ships_from'].isin(to_display)]
+        df = df.groupby(['period', 'ships_from']).count()['order_amount_usd'].unstack()
+        df = df.fillna(0)
+
+        plot = df.plot.line()
+        plot.plot()
+        plt.show()
