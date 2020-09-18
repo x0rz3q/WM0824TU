@@ -1,3 +1,5 @@
+import pandas as pd
+import matplotlib.pyplot as plt
 from functools import reduce
 
 # TODO: make plot less ugly
@@ -28,4 +30,4 @@ class CategoryLifetime:
         
         return dfs
 
-dfs = CategoryLifetime.render(df)
+# dfs = CategoryLifetime.render(df)
