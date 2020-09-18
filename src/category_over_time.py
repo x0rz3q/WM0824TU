@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 class CategoryOverTime:
+    # TODO: Discuss this on Saturday, most likely needs to exclude some categories for it to become readable.
     @staticmethod
     def render(df):
         mapping = {
