@@ -13,10 +13,14 @@ class CategoryLifetime:
         df['product_lifetime'] = df['last_observed'] - df['first_observed']
         df['period'] = pd.DatetimeIndex(df['date']).to_period('Y')
 
-        df_mean_ts = df.groupby(['period', 'category'])['product_lifetime'].mean(numeric_only=False)
+        df_mean_ts = df.groupby(['period', 'category'])['product_lifetime'].mean(numeric_only=False).unstack()
+        for c in df_mean_ts:
+            df_mean_ts[c] = df_mean_ts[c].dt.days
 
-        plot = df_mean_ts.unstack().plot.line()
+        plot = df_mean_ts.plot.line()
         plot.plot()
         plt.show()
+
+        return df_mean_ts
 
 # CategoryLifetime.render(df)
