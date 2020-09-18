@@ -1,4 +1,6 @@
 class Filter:
+    guide_keywords = ['book', 'guide', 'synthes', 'manufacture', 'homemade', 'bundle', 'how to', 'tutorial', 'manual']
+
     @staticmethod
     def filter_custom_listings(df):
         custom_listings = df[
@@ -10,9 +12,6 @@ class Filter:
 
     @staticmethod
     def filter_drug_listings(dfItems):
-
-        guide_keywords = ['book', 'guide', 'synthes', 'manufacture', 'homemade', 'bundle', 'how to', 'tutorial', 'manual']
-
         drug_keywords = [
             'alprazolam', 'hulk', 'percocet', 'pfizer', 'tavor', '0mg', '0 mg', '5mg', '5 mg', '0ug', '0 ug', 
             '5ug', '5 ug', 'µ', 'glue', 'preroll', 'pre-roll', 'ferrari', 'tesla', 'calvin klein', 'methyl', 
@@ -21,7 +20,7 @@ class Filter:
             'hashman'
         ]
 
-        df_guide_items = dfItems[dfItems['title'].str.lower().str.contains('|'.join(guide_keywords))]
+        df_guide_items = dfItems[dfItems['title'].str.lower().str.contains('|'.join(Filter.guide_keywords))]
 
         df_drug_related_items = dfItems[dfItems['title'].str.lower().str.contains('|'.join(drug_keywords))]
         df_drug_items = df_drug_related_items[~df_drug_related_items.index.isin(df_guide_items.index)]
@@ -37,6 +36,19 @@ class Filter:
         return df[~df.index.isin(df_misc_items.index)]
 
     @staticmethod
+    def filter_guns(df):
+        df_guide_items = df[df['title'].str.lower().str.contains('|'.join(Filter.guide_keywords))]
+        
+        gun_keywords = [
+            'magnum', 'glock', 'stungun', 'stun gun', 'airsoft', 'ammunition', 'rounds'
+        ]
+
+        df_gun_items = df[df['title'].str.lower().str.contains('|'.join(gun_keywords)) | df['description'].str.lower().str.contains('|'.join(gun_keywords))]
+        df_exclude = df_gun_items[~df_gun_items.index.isin(df_guide_items.index)]
+
+        return df[~df.index.isin(df_exclude.index)]
+
+    @staticmethod
     def apply_all_filters(df):
         print(f"Size before filter: {df.shape[0]}")
 
@@ -48,6 +60,9 @@ class Filter:
 
         df = Filter.filter_misc(df)
         print(f"Size after filtering misc: {df.shape[0]}")
+
+        df = Filter.filter_guns(df)
+        print(f"Size after filtering guns: {df.shape[0]}")
 
         return df
 
