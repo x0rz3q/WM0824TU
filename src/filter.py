@@ -16,8 +16,7 @@ class Filter:
             'alprazolam', 'hulk', 'percocet', 'pfizer', 'tavor', '0mg', '0 mg', '5mg', '5 mg', '0ug', '0 ug', 
             '5ug', '5 ug', 'µ', 'glue', 'preroll', 'pre-roll', 'ferrari', 'tesla', 'calvin klein', 'methyl', 
             'kush', 'amphetamine', 'mdma', '4fa', 'viagra', 'captagon', 'blotter', 'pill', 'microdot', '2c-', 
-            'ambien', 'olam', 'epam', 'blunt', 'fentanyl', 'pvp', 'oxycodone', 'xanax', 'tablets', 'pillen', '250mg', 
-            'hashman'
+            'ambien', 'olam', 'epam', 'blunt', 'fentanyl', 'pvp', 'oxycodone', 'xanax', 'tablets'
         ]
 
         df_guide_items = dfItems[dfItems['title'].str.lower().str.contains('|'.join(Filter.guide_keywords))]

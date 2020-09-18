@@ -10,6 +10,10 @@ def load_dataset(location):
     df = pd.read_sql("SELECT * FROM feedbacks left join items on feedbacks.item_hash = items.item_hash", connection)
     # remove duplicated columns
     df = df.loc[:, ~df.columns.duplicated()]
+    # convert bytestrings
+    df['giver_hash'] = df['giver_hash'].str.decode("utf-8")
+    df['receiver_hash'] = df['receiver_hash'].str.decode("utf-8")
+    df['vendor_hash'] = df['vendor_hash'].str.decode("utf-8")
     # close connection
     connection.close()
 
