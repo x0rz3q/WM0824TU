@@ -14,6 +14,10 @@ def load_dataset(location):
     df['giver_hash'] = df['giver_hash'].str.decode("utf-8")
     df['receiver_hash'] = df['receiver_hash'].str.decode("utf-8")
     df['vendor_hash'] = df['vendor_hash'].str.decode("utf-8")
+    # convert timestamps
+    df['date'] = pd.to_datetime(df['date'])
+    df['first_observed'] = pd.to_datetime(df['first_observed'])
+    df['last_observed'] = pd.to_datetime(df['last_observed'])
     # close connection
     connection.close()
 
