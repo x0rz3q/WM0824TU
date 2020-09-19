@@ -23,7 +23,8 @@ class CategoryOverTime:
 
         df = df.groupby(['period', 'category']).sum()['order_amount_usd'].unstack()
         df = df.fillna(0)
-        ax = df.plot.line(title='Category Revenue over Time')
+
+        ax = df.plot.line(title='Category Revenue over Time', style=['-'] * 10  + ['--'] * 10, linewidth=2)
         ax.set_xlabel('Month')
         ax.set_ylabel('Revenue in USD')
         ax.legend(title='Category')
