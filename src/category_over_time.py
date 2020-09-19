@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from qbstyles import mpl_style
+
+mpl_style(dark=False)
 
 class CategoryOverTime:
-    # TODO: Discuss this on Saturday, most likely needs to exclude some categories for it to become readable.
     @staticmethod
     def render(df):
         mapping = {
@@ -19,6 +21,11 @@ class CategoryOverTime:
         for k,v in mapping.items():
             df['category'] = df['category'].replace(k, v)
 
-        plot = df.groupby(['period', 'category']).sum()['order_amount_usd'].unstack().plot.line()
-        plot.plot()
+        df = df.groupby(['period', 'category']).sum()['order_amount_usd'].unstack()
+        df = df.fillna(0)
+        ax = df.plot.line(title='Category Revenue over Time')
+        ax.set_xlabel('Month')
+        ax.set_ylabel('Revenue in USD')
+        ax.legend(title='Category')
+        ax.plot()
         plt.show()
