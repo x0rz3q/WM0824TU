@@ -48,6 +48,27 @@ class Filter:
         return df[~df.index.isin(df_exclude.index)]
 
     @staticmethod
+    def separate_carding(df):
+        carding_keywords = [
+            'cvv', 'fullz', 'fulls', 'carding', 'vbv', 'avs', 'visa', 'mastercard'
+        ]
+
+        non_carding_indicators = [
+            'vps', 'rdp', 'anonymous', 'anon', 'reloadable', 'server'
+        ]
+
+        carding_categories = [
+            'cash-out', 'other - account', 'other - guide', 'other'
+        ]
+
+        df_carding_items = df[(df['category'].isin(carding_categories)) & (df['title'].str.lower().str.contains('|'.join(carding_keywords)))]
+        df_carding_items = df_carding_items[~df_carding_items['title'].str.lower().str.contains('|'.join(non_carding_indicators))]
+
+        df.loc[df.index.isin(df_carding_items.index), 'category'] = 'carding'
+        
+        return df
+
+    @staticmethod
     def apply_all_filters(df):
         print(f"Size before filter: {df.shape[0]}")
 
@@ -62,6 +83,8 @@ class Filter:
 
         df = Filter.filter_guns(df)
         print(f"Size after filtering guns: {df.shape[0]}")
+
+        df = Filter.separate_carding(df)
 
         return df
 
