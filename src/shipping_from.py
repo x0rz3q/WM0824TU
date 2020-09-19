@@ -1,6 +1,9 @@
 import sqlite3
 import pandas as pd
 import matplotlib.pyplot as plt
+from qbstyles import mpl_style
+
+mpl_style(dark=False)
 
 class ShippingFrom:
     @staticmethod
@@ -70,11 +73,14 @@ class ShippingFrom:
             df.replace(k, v, inplace=True)
 
         df['period'] = pd.DatetimeIndex(df['date']).to_period('M')
-        to_display = df.groupby('ships_from').count()['order_amount_usd'][lambda x: x > 300].index.tolist()
+        to_display = df.groupby('ships_from')['order_amount_usd'].count().nlargest(8).index.tolist()
         df = df[df['ships_from'].isin(to_display)]
         df = df.groupby(['period', 'ships_from']).count()['order_amount_usd'].unstack()
         df = df.fillna(0)
 
-        plot = df.plot.line()
+        ax = plot = df.plot.line(title='Export of Cybercrime per Country in a Monthly Period')
+        ax.set_xlabel('Month')
+        ax.set_ylabel('Export')
+        ax.legend(title='Country')
         plot.plot()
         plt.show()
