@@ -59,7 +59,7 @@ class ShippingTo:
             'Russia (Russian Fed.)': 'Russia', 
             'AUSTRALIA': 'Australia',
             'finland': 'Finland',
-            'PM': 'Saint Pierre and Miquelon'
+            'PM': 'Saint Pierre and Miquelon' # TODO: maybe PM does is not a country code
         }
 
         for k, v in mapping.items():
