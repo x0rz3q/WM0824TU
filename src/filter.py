@@ -50,7 +50,7 @@ class Filter:
     @staticmethod
     def separate_carding(df):
         carding_keywords = [
-            'cvv', 'fullz', 'fulls', 'carding', 'vbv', 'avs', 'visa', 'mastercard'
+            'cvv', 'fullz', 'fulls', 'carding', 'vbv', 'avs', 'visa', 'mastercard', 'amex', 'ccv', 'pizza', 'slice', ' cc '
         ]
 
         non_carding_indicators = [
