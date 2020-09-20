@@ -1,11 +1,15 @@
 import matplotlib.pyplot as plt
 from qbstyles import mpl_style
+from category_over_time import CategoryOverTime
 
 mpl_style(dark=False)
 
 class MarketDominance:
     @staticmethod
     def render(df, split=False):
+        for k,v in CategoryOverTime.mapping.items():
+            df['category'] = df['category'].replace(k, v)
+
         df = df.groupby(['category', 'marketplace']).sum()['order_amount_usd'].unstack()
         df = df.fillna(0)
 

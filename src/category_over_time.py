@@ -5,20 +5,21 @@ from qbstyles import mpl_style
 mpl_style(dark=False)
 
 class CategoryOverTime:
+    mapping = {
+        'other - fake': 'fake',
+        'other - guide': 'guide',
+        'other - account': 'account',
+        'other - custom': 'custom',
+        'other - pirated software': 'pirated software',
+        'other - voucher/invite/codes/lottery/gift': 'voucher/invite/codes/lottery/gift'
+    }
+
     @staticmethod
     def render(df):
-        mapping = {
-            'other - fake': 'fake',
-            'other - guide': 'guide',
-            'other - account': 'account',
-            'other - custom': 'custom',
-            'other - pirated software': 'pirated software',
-            'other - voucher/invite/codes/lottery/gift': 'voucher/invite/codes/lottery/gift'
-        }
 
         df['period'] = pd.DatetimeIndex(df['date']).to_period('M')
 
-        for k,v in mapping.items():
+        for k,v in CategoryOverTime.mapping.items():
             df['category'] = df['category'].replace(k, v)
 
         df = df.groupby(['period', 'category']).sum()['order_amount_usd'].unstack()
