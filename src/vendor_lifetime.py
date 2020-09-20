@@ -33,8 +33,15 @@ class VendorLifetime:
         
         # generate plot
         dfMeanVendorLifetime = pd.DataFrame(list(zip(periods, meanVendorLifetime)), columns =['month', 'mean_vendor_lifetime']) 
-        ax = dfMeanVendorLifetime.plot.line(x='month', y='mean_vendor_lifetime', legend=False)
+        ax = dfMeanVendorLifetime.plot.line(x='month', y='mean_vendor_lifetime', legend=False, title='Vendor lifetime over time')
         ax.set_xlabel("Time")
         ax.set_ylabel("Mean vendor lifetime (days)")
+        ax.set_ylim(0, 750)
+        ax.vlines(x=pd.to_datetime('October 2013'), ymin=0, ymax=750, linestyles='dashed', colors=['orange'])
+        ax.text(pd.to_datetime('November 2013'), 200, 'SR1 take-down', rotation=90, va='center')
+        ax.vlines(x=pd.to_datetime('November 6 2014'), ymin=0, ymax=750, linestyles='dashed', colors=['orange'])
+        ax.text(pd.to_datetime('December 2014'), 200, 'Operation Onymous', rotation=90, va='center')
+        ax.vlines(x=pd.to_datetime('August 2015'), ymin=0, ymax=750, linestyles='dashed', colors=['orange'])
+        ax.text(pd.to_datetime('September 2015'), 200, 'Agora graceful exit', rotation=90, va='center')
         ax.plot()
         plt.show()
