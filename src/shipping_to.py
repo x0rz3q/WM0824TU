@@ -73,7 +73,7 @@ class ShippingTo:
 
         ax = plot = df.plot.line(title='Import of Cybercrime per Country in a Monthly Period')
         ax.set_xlabel('Month')
-        ax.set_ylabel('Import')
+        ax.set_ylabel('Import (# of items sold)')
         ax.legend(title='Country')
         plot.plot()
         plt.show()

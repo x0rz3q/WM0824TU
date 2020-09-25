@@ -78,9 +78,9 @@ class ShippingFrom:
         df = df.groupby(['period', 'ships_from']).count()['order_amount_usd'].unstack()
         df = df.fillna(0)
 
-        ax = plot = df.plot.line(title='Export of Cybercrime per Country in a Monthly Period')
+        ax = df.plot.line(title='Export of Cybercrime per Country in a Monthly Period')
         ax.set_xlabel('Month')
-        ax.set_ylabel('Export')
+        ax.set_ylabel('Export (# of items sold)')
         ax.legend(title='Country')
-        plot.plot()
+        ax.plot()
         plt.show()
