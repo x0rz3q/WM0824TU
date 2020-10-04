@@ -8,7 +8,7 @@ mpl_style(dark=False)
 
 class MarketDominance:
     @staticmethod
-    def render(df, split=False):
+    def render(df, split=True):
         for k,v in CategoryOverTime.mapping.items():
             df['category'] = df['category'].replace(k, v)
         
@@ -27,18 +27,24 @@ class MarketDominance:
             df[market] = df[market] / lifetime
 
         if not split:
-            ax = df.plot.bar(title='Category Revenue per Market', width=0.8)
+            ax = df.plot.bar(title='Category Revenue per Market', width=0.8, figsize=(10, 6))
             ax.set_xlabel('Category')
-            ax.set_ylabel('Average revenue per month in USD')
+            ax.set_ylabel('Mean revenue per month in USD')
             ax.legend(title='Marketplace')
             ax.plot()
             plt.tight_layout()
+            plt.savefig('market_dominance.pdf')
             plt.show()
         else:
             for market in df:
-                ax = df[market].plot.bar(title=f'Category Revenue of {market}', width=0.8)
+                ax = df[market].plot.bar(title=f'Category Revenue of {market}', width=0.8, figsize=(10, 6))
                 ax.set_xlabel('Category')
                 ax.set_ylabel('Average revenue per month in USD')
+                ax.set_ylim(0, 200000)
+                plt.yticks(np.arange(0, 200000+1, 50000))
                 ax.plot()
                 plt.tight_layout()
-                plt.show()
+                plt.savefig(f"market_dominance-{market}.pdf")
+                plt.clf()
+                plt.figure()
+                # plt.show()
