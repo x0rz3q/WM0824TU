@@ -6,3 +6,5 @@ src/__pycache__
 .vscode
 .DS_Store
 **/*.sqlite3
+.ipynb_checkpoints
+src/img
