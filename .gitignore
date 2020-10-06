@@ -8,3 +8,4 @@ src/__pycache__
 **/*.sqlite3
 .ipynb_checkpoints
 src/img
+src/deliverable2/__pycache__/revenue_breaches.cpython-38.pyc
