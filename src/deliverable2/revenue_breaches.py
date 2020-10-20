@@ -37,7 +37,7 @@ class RevenueBreaches:
         x = dfBreachesRevenue['revenue'].tolist()
         y = dfBreachesRevenue['breaches'].tolist()
         corr, p_value = stats.kendalltau(x, y)
-        plt.figure(figsize=(7,5))
+        plt.figure(figsize=(10,6))
         ax = regplot(x=x, y=y, marker="+")
         ax.set(xlabel='Carding revenue share of total revenue per quartile', ylabel='Number of Major Breaches per quartile', title='Correlation Between Number of Data Breaches and Carding Revenue per Quartile')
         ax.text(max(x) * 0.8, max(y) * 0.95, r'$\tau$=' + str(round(corr, 2)) + '\np-value= ' + str(round(p_value, 2)))
