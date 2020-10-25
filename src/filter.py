@@ -24,7 +24,10 @@ class Filter:
         df_drug_related_items = dfItems[dfItems['title'].str.lower().str.contains('|'.join(drug_keywords))]
         df_drug_items = df_drug_related_items[~df_drug_related_items.index.isin(df_guide_items.index)]
 
-        return dfItems[~dfItems.index.isin(df_drug_items.index)]
+        dfItems = dfItems[~dfItems.index.isin(df_drug_items.index)]
+        dfItems = dfItems[dfItems['category'] != 'other - custom']
+
+        return dfItems
 
     @staticmethod
     def filter_misc(df):
