@@ -13,19 +13,19 @@ mpl_style(dark=False)
 
 class MediaCoverageCategories:
     @staticmethod
-    def render(df):
+    def render(df, next=False):
         mapping = {
             'other - fake': 'other',
-            'other - guide': 'guide',
+            'other - guide': 'other',
             'other - account': 'other',
             'other - custom': 'other',
             'other - pirated software': 'other',
             'other - voucher/invite/codes/lottery/gift': 'other',
             'RAT': 'hacking services',
-            'exploits': 'hacking services',
-            'botnet': 'hacking services',
-            'e-mail': 'hacking services',
-            'malware': 'hacking services',
+            'exploits': 'hacking services & tools',
+            'botnet': 'hacking services & tools',
+            'e-mail': 'hacking services & tools',
+            'malware': 'hacking services & tools',
             'website': 'development',
             'app': 'development',
             'hosting': 'development',
@@ -38,7 +38,11 @@ class MediaCoverageCategories:
         
         # Load in the black market media coverage dataset
         df_bm = pd.read_csv('../data/news_coverage.csv')[['date', 'count']]
-        df_bm['date'] = pd.to_datetime(df['date'])
+        df_bm['date'] = pd.to_datetime(df_bm['date'])
+
+        if next:
+            df_bm['date'] = df_bm['date'] - pd.DateOffset(months=1)
+
         df_bm = df_bm.sort_values(by='date').reset_index(drop=True).dropna()
         df_bm['period'] = pd.DatetimeIndex(df_bm['date']).to_period('M')
         df_bm = df_bm.groupby('period').sum()
@@ -68,6 +72,12 @@ class MediaCoverageCategories:
 
                 plt.figure(figsize=(10,6))
                 ax = sns.regplot(x=x, y=y, marker="+")
-                ax.set(xlabel='Monthly Media Coverage (# of Articles)', ylabel='Monthly Revenue in USD', title=f'Correlation Between Media Coverage of Black Markets and Total Sales ({category}, {title})')
+
+                if next:
+                    graph_title = f'Correlation Between Media Coverage of Black Markets of the Previous Month and Total Sales ({category}, {title})'
+                else:
+                    graph_title = f'Correlation Between Media Coverage of Black Markets and Total Sales ({category}, {title})'
+
+                ax.set(xlabel='Monthly Media Coverage (# of Articles)', ylabel='Monthly Revenue in USD', title=graph_title)
                 ax.text(max(x) * 0.8, max(y) * 0.95, r'$\tau$=' + str(round(corr, 2)) + '\np-value= ' + str(round(p_value, 2)))
                 plt.savefig(f"figures/{category}-{title}.pdf")
