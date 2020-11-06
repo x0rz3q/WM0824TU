@@ -21,7 +21,7 @@ class MediaCoverageCategories:
             'other - custom': 'other',
             'other - pirated software': 'other',
             'other - voucher/invite/codes/lottery/gift': 'other',
-            'RAT': 'hacking services',
+            'RAT': 'hacking services & tools',
             'exploits': 'hacking services & tools',
             'botnet': 'hacking services & tools',
             'e-mail': 'hacking services & tools',
@@ -73,11 +73,6 @@ class MediaCoverageCategories:
                 plt.figure(figsize=(10,6))
                 ax = sns.regplot(x=x, y=y, marker="+")
 
-                if next:
-                    graph_title = f'Correlation Between Media Coverage of Black Markets of the Previous Month and Total Sales ({category}, {title})'
-                else:
-                    graph_title = f'Correlation Between Media Coverage of Black Markets and Total Sales ({category}, {title})'
-
-                ax.set(xlabel='Monthly Media Coverage (# of Articles)', ylabel='Monthly Revenue in USD', title=graph_title)
+                ax.set(xlabel='Monthly Media Coverage (# of Articles)', ylabel='Monthly Revenue in USD', title='')
                 ax.text(max(x) * 0.8, max(y) * 0.95, r'$\tau$=' + str(round(corr, 2)) + '\np-value= ' + str(round(p_value, 2)))
                 plt.savefig(f"figures/{category}-{title}.pdf")
