@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from scipy import stats
 import seaborn as sns
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter, date2num
 
@@ -45,13 +46,16 @@ class RedditRevenue:
             y = dfRevenue['growth'].tolist()
             corr, p_value = stats.kendalltau(x, y)
 
+            from qbstyles import mpl_style
+            mpl_style(dark=False)
+
             plt.figure(figsize=(10,6))
             points = plt.scatter(dfRevenue['order_amount_usd'], dfRevenue['growth'], c=[date2num(i.date()) for i in dfRevenue.date], s=20, cmap="plasma")
             plt.colorbar(points, format=DateFormatter('%b %y'))
 
             ax = sns.regplot("order_amount_usd", "growth", data=dfRevenue, scatter=False)
 
-            ax.set(xlabel='Daily Revenue in USD', ylabel='Daily Growth in Users', title='Subscriber Growth of {} vs. Revenue ({})'.format(subreddit, period))
+            #ax.set(xlabel='Daily Revenue in USD', ylabel='Daily Growth in Users', title='Subscriber Growth of {} vs. Revenue ({})'.format(subreddit, period))
             plt.ylim(bottom=-1)
             ax.text(max(x) * 0.8, max(y) * 0.95, r'$\tau$=' + str(round(corr, 2)) + '\np-value= ' + str(round(p_value, 2)))
 
